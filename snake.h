@@ -131,6 +131,7 @@ class Snake {
             // their coordinates equal to the head coordinates
             while (currNode != nullptr) {
                 if (currNode->atPosition(headCoords[0], headCoords[1])) {
+                    std::cout << "\nYou bit yourself! ";
                     return true;
                 }
                 currNode = currNode->getPrev();

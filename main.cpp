@@ -52,7 +52,8 @@ void render(Snake& s, Fruit& f) {
 }
 
 // WASD key controls
-void userInput(Snake& s) {
+bool userInput(Snake& s) {
+    bool continuing = true;
     if (_kbhit()) {
         switch(getch()) {
             case 'w':
@@ -60,7 +61,7 @@ void userInput(Snake& s) {
                 break;
             case 's':
                 s.setDir('d');
-                break;;
+                break;
             case 'a':
                 s.setDir('l');
                 break;
@@ -69,13 +70,13 @@ void userInput(Snake& s) {
                 break;
             case 'x':
                 std::cout << "Thank you for playing!" << std::endl;
-                Sleep(3000);
-                system("cls");
-                exit(0);
+                continuing = false;
+                break;
             default:
                 std::cout << "invalid input" << std::endl;
         }
     }
+    return continuing;
 }
 
 int main() {
@@ -99,13 +100,15 @@ int main() {
             // game loop continues while snake doesn't touch own tail
             while (!mySnake.isTouching()) {
                 render(mySnake, myFruit);
-                userInput(mySnake);
+                if (!userInput(mySnake)) {
+                    break;
+                }
                 mySnake.moveSnake();
                 Sleep(200);
             }
             
             // When snake dies, display game over message and clear input
-            std::cout << "\nYou bit yourself! Your final score is " << mySnake.getScore() << " points. Press enter to continue." << std::endl;
+            std::cout << "Your final score is " << mySnake.getScore() << " points. Press enter to continue." << std::endl;
             std::cin.clear();
             std::cin.ignore(256, '\n');
 
