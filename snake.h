@@ -32,8 +32,7 @@ class Snake {
         void addNode() {
 
             // add node to end of snake, then assign new node to tail
-            int* tailCoords = tail->getCoords();
-            Node* newNode = new Node(tailCoords[0], tailCoords[1] - 2);
+            Node* newNode = new Node(tail->getRow(), tail->getCol() - 2);
             tail->setPrev(newNode);
             tail = newNode;
             score++;
@@ -44,16 +43,15 @@ class Snake {
 
         // method for moving snake across screen string array
         void moveSnake() {
-            int* prevNodeCoords = head->getCoords();
 
             // variables to temporarily store current head node coordinates to be 
             // used by prev node when it moves
-            int tempX = prevNodeCoords[0];
-            int tempY = prevNodeCoords[1];
+            int tempX = head->getRow();
+            int tempY = head->getCol();
 
             // variables to change coordinates for head node based on direction
-            int curRow = prevNodeCoords[0];
-            int curCol  = prevNodeCoords[1];
+            int curRow = head->getRow();
+            int curCol  = head->getCol();
             switch (direction) {
                 case 'u':
                     curRow = curRow - 1;
@@ -96,9 +94,8 @@ class Snake {
 
                 // variables to store current node coordinates before change is made
                 // to be used by previous node
-                prevNodeCoords = currNode->getCoords();
-                tempX = prevNodeCoords[0];
-                tempY = prevNodeCoords[1];
+                tempX = currNode->getRow();
+                tempY = currNode->getCol();
 
                 currNode->setCoords(curRow, curCol);
                 currNode = currNode->getPrev();
@@ -110,27 +107,23 @@ class Snake {
 
         // method for adding snake nodes into screen string array
         void showSnakeOnScreen(std::string* scr) {
-            int* headCoord = head->getCoords();
-            int* currNodeCoords;
-            scr[headCoord[0]][headCoord[1]] = 'O';
+            scr[head->getRow()][head->getCol()] = 'O';
 
             Node* currNode = head->getPrev();
             while (currNode != nullptr) {
-                currNodeCoords = currNode->getCoords();
-                scr[currNodeCoords[0]][currNodeCoords[1]] = 'o';
+                scr[currNode->getRow()][currNode->getCol()] = 'o';
                 currNode = currNode->getPrev();
             }
         }
 
         // method to determine if snake has run into own tail
         bool isTouching() {
-            int* headCoords = head->getCoords();
             Node* currNode = head->getPrev();
 
             // read through all nodes after head node to see if
             // their coordinates equal to the head coordinates
             while (currNode != nullptr) {
-                if (currNode->atPosition(headCoords[0], headCoords[1])) {
+                if (currNode->atPosition(head->getRow(), head->getCol())) {
                     std::cout << "\nYou bit yourself! ";
                     return true;
                 }

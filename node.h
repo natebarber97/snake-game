@@ -4,35 +4,39 @@ class Node {
     private:
         Node* next;
         Node* prev;
-        int* coord;
+        int rowCoord;
+        int colCoord;
     public:
-        Node(int rowCoord, int colCoord) {
+        Node(int rc, int cc) {
             next = nullptr;
             prev = nullptr;
-            coord = new int[2];
-            coord[0] = rowCoord;
-            coord[1] = colCoord;
+            rowCoord = rc;
+            colCoord = cc;
         };
         Node(Node& toCopy) {
             next = toCopy.next;
             prev = toCopy.prev;
-            coord = toCopy.coord;
+            rowCoord = toCopy.rowCoord;
+            colCoord = toCopy.colCoord;
         };
         Node& operator=(const Node& toCopy) {
             this->next = toCopy.next;
             this->prev = toCopy.prev;
-            this->coord = toCopy.coord;
+            this->rowCoord = toCopy.rowCoord;
+            this->colCoord = toCopy.colCoord;
             return *this;
         };
         ~Node() {
-            delete coord;
         }
-        int* getCoords() {
-            return coord;
+        int getRow() {
+            return rowCoord;
+        }
+        int getCol() {
+            return colCoord;
         };
-        void setCoords(int rowCoord, int colCoord) {
-            coord[0] = rowCoord;
-            coord[1] = colCoord;
+        void setCoords(int rc, int cc) {
+            rowCoord = rc;
+            colCoord = cc;
         }
         Node* getNext() {
             return next;
@@ -49,7 +53,7 @@ class Node {
             prevNode->next = this;
         }
         bool atPosition(int x, int y) {
-            if ((coord[0] == x) && (coord[1] == y)) {
+            if ((rowCoord == x) && (colCoord == y)) {
                 return true;
             }
             return false;
